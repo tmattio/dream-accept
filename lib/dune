@@ -1,0 +1,6 @@
+(library
+ (name dream_accept)
+ (public_name dream-accept)
+ (libraries dream)
+ (preprocess
+  (pps lwt_ppx)))
