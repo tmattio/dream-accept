@@ -18,7 +18,7 @@
 open Angstrom
 open Printf
 
-type media_range =
+type media_type =
   | Media_type of string * string
   | Any_media_subtype of string
   | Any
@@ -36,7 +36,7 @@ type encoding =
   | Any
 
 type language =
-  | Language of string list
+  | Language of string
   | Any
 
 type p = string * string
@@ -133,7 +133,7 @@ let cut_params params =
 
 (** Parser for values of Accept header. Example of value:
     text/html,application/xml;q=0.9*)
-let anymedia = string "*/*" *> return (Any : media_range)
+let anymedia = string "*/*" *> return (Any : media_type)
 
 let anymediasubtype =
   lift
@@ -155,10 +155,10 @@ let media_parser =
     media_value_parser
     (lift cut_params params)
 
-let media_ranges_parser : (media_range * p list) qlist t =
+let media_types_parser : (media_type * p list) qlist t =
   sep_by1_comma media_parser
 
-let media_ranges = eval_parser media_ranges_parser (Any, [])
+let media_types = eval_parser media_types_parser (Any, [])
 
 (** Parser for values of Accept-charsets header. Example: Accept-charsets:
     iso-8859-5, unicode-1-1;q=0.8 *)
@@ -208,10 +208,7 @@ let encodings = eval_parser encodings_parser Any
 let language_value_parser =
   ows
   *> (char '*' *> return (Any : language)
-     <|> lift
-           (fun s ->
-             Language (String.split_on_char '-' (String.lowercase_ascii s)))
-           token)
+     <|> lift (fun s -> Language (String.lowercase_ascii s)) token)
 
 let language_parser =
   lift2 (fun value q -> q, value) language_value_parser (lift get_q params)
@@ -248,7 +245,7 @@ let accept_el ?q el pl =
   | None ->
     el
 
-let string_of_media_range ?q = function
+let string_of_media_type ?q = function
   | Media_type (t, st), pl ->
     accept_el ?q (sprintf "%s/%s" t st) pl
   | Any_media_subtype t, pl ->
@@ -277,8 +274,8 @@ let string_of_encoding ?q = function
     accept_el ?q "*" []
 
 let string_of_language ?q = function
-  | Language langl ->
-    accept_el ?q (String.concat "-" langl) []
+  | Language lang ->
+    accept_el ?q lang []
   | Any ->
     accept_el ?q "*" []
 
@@ -293,8 +290,8 @@ let string_of_list s_of_el =
   in
   aux ""
 
-let string_of_media_ranges =
-  string_of_list (fun el q -> string_of_media_range ~q el)
+let string_of_media_types =
+  string_of_list (fun el q -> string_of_media_type ~q el)
 
 let string_of_charsets = string_of_list (fun el q -> string_of_charset ~q el)
 

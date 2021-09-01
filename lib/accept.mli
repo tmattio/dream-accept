@@ -16,7 +16,7 @@
 
 type p = string * string
 
-type media_range =
+type media_type =
   | Media_type of string * string
   | Any_media_subtype of string
   | Any
@@ -38,7 +38,7 @@ type encoding =
 
     @see <https://tools.ietf.org/html/rfc7231#section-5.3.5> the specification. *)
 type language =
-  | Language of string list
+  | Language of string
   | Any
 
 (** Accept-Encoding HTTP header parsing and generation *)
@@ -53,7 +53,7 @@ type 'a qlist = (q * 'a) list
 val qsort : 'a qlist -> 'a qlist
 (** Sort by quality, biggest first. Respect the initial ordering. *)
 
-val media_ranges : string option -> (media_range * p list) qlist
+val media_types : string option -> (media_type * p list) qlist
 
 val charsets : string option -> charset qlist
 
@@ -61,7 +61,7 @@ val encodings : string option -> encoding qlist
 
 val languages : string option -> language qlist
 
-val string_of_media_range : ?q:q -> media_range * p list -> string
+val string_of_media_type : ?q:q -> media_type * p list -> string
 
 val string_of_charset : ?q:q -> charset -> string
 
@@ -69,7 +69,7 @@ val string_of_encoding : ?q:q -> encoding -> string
 
 val string_of_language : ?q:q -> language -> string
 
-val string_of_media_ranges : (media_range * p list) qlist -> string
+val string_of_media_types : (media_type * p list) qlist -> string
 
 val string_of_charsets : charset qlist -> string
 
