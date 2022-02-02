@@ -1,4 +1,4 @@
-(lang dune 2.0)
+(lang dune 2.9)
 
 (name dream-accept)
 
