@@ -22,6 +22,5 @@
  (depends
   (ocaml
    (>= 4.08.0))
-  dune
-  dream
-  (odoc :with-doc)))
+  (dream
+   (>= 1.0.0~alpha3))))

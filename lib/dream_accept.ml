@@ -3,9 +3,7 @@ type media_type = Accept.media_type =
   | Any_media_subtype of string
   | Any
 
-type charset = Accept.charset =
-  | Charset of string
-  | Any
+type charset = Accept.charset = Charset of string | Any
 
 type encoding = Accept.encoding =
   | Encoding of string
@@ -15,14 +13,11 @@ type encoding = Accept.encoding =
   | Identity
   | Any
 
-type language = Accept.language =
-  | Language of string
-  | Any
+type language = Accept.language = Language of string | Any
 
 let accepted_charsets req =
   Accept.charsets @@ Dream.header req "Accept-Charset"
-  |> Accept.qsort
-  |> List.map snd
+  |> Accept.qsort |> List.map snd
 
 let accepted_charsets_with_quality req =
   Accept.charsets @@ Dream.header req "Accept-Charset"
@@ -34,8 +29,7 @@ let accept_charsets charsets req =
 
 let accepted_encodings req =
   Accept.encodings @@ Dream.header req "Accept-Encoding"
-  |> Accept.qsort
-  |> List.map snd
+  |> Accept.qsort |> List.map snd
 
 let accepted_encodings_with_quality req =
   Accept.encodings @@ Dream.header req "Accept-Encoding"
@@ -47,8 +41,7 @@ let accept_encodings encodings req =
 
 let accepted_languages req =
   Accept.languages @@ Dream.header req "Accept-Language"
-  |> Accept.qsort
-  |> List.map snd
+  |> Accept.qsort |> List.map snd
 
 let accepted_languages_with_quality req =
   Accept.languages @@ Dream.header req "Accept-Language"
@@ -65,12 +58,12 @@ let accepted_media_types req =
 
 let accepted_media_types_with_quality req =
   Accept.media_types @@ Dream.header req "Accept"
-  |> List.map (fun (i, x) -> i, fst x)
+  |> List.map (fun (i, x) -> (i, fst x))
 
 let accept_media_types media_types req =
   let media_types =
     Accept.string_of_media_types
-      (List.map (fun (i, x) -> i, (x, [])) media_types)
+      (List.map (fun (i, x) -> (i, (x, []))) media_types)
   in
   Dream.add_header req media_types "Accept";
   req

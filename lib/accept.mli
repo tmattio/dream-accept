@@ -21,9 +21,7 @@ type media_type =
   | Any_media_subtype of string
   | Any
 
-type charset =
-  | Charset of string
-  | Any
+type charset = Charset of string | Any
 
 type encoding =
   | Encoding of string
@@ -37,42 +35,29 @@ type encoding =
     [Language \["en"; "gb"\]].
 
     @see <https://tools.ietf.org/html/rfc7231#section-5.3.5> the specification. *)
-type language =
-  | Language of string
-  | Any
+type language = Language of string | Any
 
 (** Accept-Encoding HTTP header parsing and generation *)
 
+type q = int
 (** Qualities are integers between 0 and 1000. A header with ["q=0.7"]
     corresponds to a quality of [700]. *)
-type q = int
 
-(** Lists, annotated with qualities. *)
 type 'a qlist = (q * 'a) list
+(** Lists, annotated with qualities. *)
 
 val qsort : 'a qlist -> 'a qlist
 (** Sort by quality, biggest first. Respect the initial ordering. *)
 
 val media_types : string option -> (media_type * p list) qlist
-
 val charsets : string option -> charset qlist
-
 val encodings : string option -> encoding qlist
-
 val languages : string option -> language qlist
-
 val string_of_media_type : ?q:q -> media_type * p list -> string
-
 val string_of_charset : ?q:q -> charset -> string
-
 val string_of_encoding : ?q:q -> encoding -> string
-
 val string_of_language : ?q:q -> language -> string
-
 val string_of_media_types : (media_type * p list) qlist -> string
-
 val string_of_charsets : charset qlist -> string
-
 val string_of_encodings : encoding qlist -> string
-
 val string_of_languages : language qlist -> string

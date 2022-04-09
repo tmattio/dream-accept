@@ -9,9 +9,9 @@ homepage: "https://github.com/tmattio/dream-accept"
 doc: "https://tmattio.github.io/dream-accept/"
 bug-reports: "https://github.com/tmattio/dream-accept/issues"
 depends: [
-  "ocaml" {>= "4.08.0"}
   "dune" {>= "2.9"}
-  "dream"
+  "ocaml" {>= "4.08.0"}
+  "dream" {>= "1.0.0~alpha3"}
   "odoc" {with-doc}
 ]
 build: [
@@ -31,8 +31,3 @@ build: [
   ["dune" "install" "-p" name "--create-install-files" name]
 ]
 dev-repo: "git+https://github.com/tmattio/dream-accept.git"
-pin-depends: [
-  ["dream.dev" "git+https://github.com/aantron/dream#master"]
-  ["dream-pure.dev" "git+https://github.com/aantron/dream#master"]
-  ["dream-httpaf.dev" "git+https://github.com/aantron/dream#master"]
-]
