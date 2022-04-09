@@ -17,7 +17,7 @@
 
 (package
  (name dream-accept)
- (synopsis "Accept headers parsing for Dream.")
+ (synopsis "Accept headers parsing for Dream")
  (description "Accept headers parsing for Dream.")
  (depends
   (ocaml
